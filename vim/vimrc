@@ -12,7 +12,7 @@ set smartindent
 set encoding=utf-8
 
 "astehtics
-colorscheme shloimy
+colorscheme colors
 set cursorline
 set number relativenumber
 set incsearch
