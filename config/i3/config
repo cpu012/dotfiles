@@ -1,0 +1,231 @@
+#variables
+#colorscheme variables
+set $background1 08090e
+set $background2 04050a
+set $forground1 007dae
+set $forground2 41b8f2
+set $red1 fa2e28
+set $red2 cf8dd2
+set $red3 af25b2
+set $blue 2a2aff
+#mode variables
+set $modeTerm t
+set $modeSys s
+set $modeCommand c
+set $modeResize r
+set $modeScratch +
+set $modeX11 X
+#other variables
+set $mod Mod4
+set $term st
+set $browser qutebrowser
+
+
+# productivity
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+
+# Use pactl to adjust volume in PulseAudio.
+set $refresh_i3status killall -SIGUSR1 i3status
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +2% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -2% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# window specific
+for_window [class="feh"] floating enable
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# kill focused window
+bindsym $mod+x kill
+
+bindsym $mod+d exec --no-startup-id dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu
+#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+
+# change focus between windows
+bindsym $mod+l focus right
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+h focus left
+bindsym $mod+space focus mode_toggle
+bindsym $mod+a focus parent
+
+# move windows
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# layouts
+bindsym $mod+v split toggle
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# custom modes
+
+# terminal mode
+mode "$modeTerm" { 
+    #create keybindings to return to normal mode
+    bindsym i mode "default"
+    #launch terminal applications inside your default terminal
+    bindsym m mode "default" exec --no-startup-id $term -e 'cmus'
+    bindsym Return mode "default" exec --no-startup-id $term
+}
+
+#sys mode
+mode "$modeSys" { 
+    set $lock exec i3lock -e -b -c 08090E -f
+    #create keybindings to exit this mode
+    bindsym i mode "default"
+    #use keybindings to set the system in a different state
+    bindsym h mode "default" $lock && systemctl hibernate
+    bindsym l mode "default" $lock
+    bindsym s mode "default" $lock && systemctl suspend
+    bindsym Shift+p exec systemctl poweroff
+    bindsym Shift+r exec systemctl reboot
+    bindsym Shift+e exit
+    bindsym r restart
+    bindsym Shift+c reload
+}
+
+# resize mode
+mode "$modeResize" {
+        bindsym h resize shrink width 3 px or 3 ppt
+        bindsym j resize grow height 3 px or 3 ppt
+        bindsym k resize shrink height 3 px or 3 ppt
+        bindsym l resize grow width 3 px or 3 ppt
+        bindsym i  mode "default"
+}
+
+# scratchpad mode
+mode "$modeScratch" { 
+    bindsym i mode "default"
+    bindsym Return scratchpad show mode "default"
+    bindsym Shift+Return scratchpad show floating disable mode "default"
+    bindsym f [class="feh"] scratchpad show mode "default"
+    bindsym t [class=$term] scratchpad show floating disable mode "default"
+    bindsym d [class="discord"]  scratchpad show mode "default" floating disable move up
+}
+
+
+# x11 mode
+mode "$modeX11" {
+    bindsym i mode "default" exec
+    bindsym c mode "default" exec xcalib -invert -alter # invert mode
+}
+
+# custom keybindings
+bindsym $mod+b exec --no-startup-id $browser
+bindsym $mod+minus move scratchpad
+bindsym $mod+plus mode "$modeScratch"
+bindsym $mod+p bar mode toggle bar-0
+bindsym $mod+Return exec --no-startup-id $term
+bindsym $mod+g exec --no-startup-id discord
+bindsym Print exec --no-startup-id ~/scripts/scrot/run.sh
+bindsym $mod+F1 exec --no-startup-id ~/scripts/img/run.sh
+bindsym $mod+F2 exec --no-startup-id ~/scripts/img/scrn.sh
+bindsym $mod+F3 exec $term -e man $(man -k . | dmenu -l 40 -p man: | awk '{print $1}')
+# mode keybindings
+bindsym $mod+r mode "$modeResize"
+bindsym $mod+t mode "$modeTerm"
+bindsym $mod+q mode "$modeSys"
+bindsym $mod+o mode "$modeCommand"
+bindsym $mod+m mode "$modeX11"
+
+# create workspace names
+set $ws1 1
+set $ws2 2
+set $ws3 3
+set $ws4 4
+set $ws5 5
+set $ws6 6
+set $ws7 7
+set $ws8 8
+set $ws9 9
+set $ws10 10
+
+# switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+
+
+# ahstetics (ricing)
+# start a bar with transparancy
+bar {
+    i3bar_command i3bar -b bar-1 -t
+    status_command i3status -c ~/.config/i3/status # put information on that bar
+    position top
+    workspace_buttons no
+    font pango:monospace 10
+    tray_output none
+    separator_symbol "|"
+    Height 15
+    bindsym $mod+p mode toggle
+    # set the bar colors
+    colors {
+	    separator    #$blue
+        background   #$background1d6
+        statusline   #$red2ef
+        #            border        background       text
+        binding_mode #$background1f0 #$background1c0  #$forground1
+	}
+}
+
+#other usefull things
+workspace_layout default
+hide_edge_borders both
+popup_during_fullscreen leave_fullscreen
+default_border none
+focus_follows_mouse yes
+
+exec picom --config ~/.config/picom/picom.conf # start a compositor for transparancy
+
+#colors
+client.background #$background1
+#                       border       background    text         indicator child_border
+client.focused          #$background2 #$background2 #$forground2 #$red1    #$blue
+client.focused_inactive #$background2 #$background2 #$red2       #$red1    #$blue
+client.unfocused        #$background1 #$background1 #$red2       #$red2    #$blue
+client.urgent           #$background1 #$background1 #$red1       #$blue    #$blue
+client.placeholder      #$background1 #$background1 #$forground2 #$red2    #$blue
+
+
+# startup executions
+exec cd
+exec_always bluetoothctl power on
+#exec_always ~/.config/i3/bat.sh
+
+# gaps 
+gaps inner 11
+gaps outer -4
+
+exec_always ~/.fehbg #set the wallpaper
+font pango:monospace 9
+
+# startup programs
+exec $term

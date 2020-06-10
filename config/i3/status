@@ -1,0 +1,58 @@
+general {
+	colors = true
+	color_good = "#41B8F2"
+	color_degraded = "#007dae"
+	color_bad = "#BF4040"
+	interval = "1"
+}
+
+order += "memory"
+order += "cpu_usage"
+order += "wireless _first_"
+order += "battery all"
+order += "load"
+order += "volume master"
+order += "time"
+
+wireless _first_ {
+    format_up = "%quality %bitrate %essid %ip"
+    format_down = "down"
+}
+
+battery all {
+    integer_battery_capacity = true
+    format = "%status%percentage %remaining %consumption"
+    status_chr = "🔌 "
+    status_full = "🔌 "
+    status_bat = "🔋 "
+    status_unk = ""
+    low_threshold = "25"
+    threshold_type = "percentage"
+    path = "/sys/class/power_supply/C1F%d/uevent"
+}
+
+cpu_usage {
+    format = "%usage %cpu0 %cpu1"
+    degraded_threshold = "30"
+    max_threshold = "75"
+}
+
+memory {
+    format = "%percentage_used %used"
+    threshold_degraded = "1.1G"
+    threshold_critical = "1.5G"
+}
+
+load {
+    format = "%1min %5min %15min"
+    max_threshold = "1.1"
+}
+
+time {
+    format = "%Y %b %d (%a.)  %I:%M:%S %p "
+}
+
+volume master {
+    format = "%volume %devicename"
+    format_muted = "~~ %volume %devicename"
+}

@@ -1,0 +1,83 @@
+---
+env:
+    TERM: alacritty
+
+window:
+    padding:
+        x: 4
+        y: 4
+
+    decorations: none
+    dynamic_padding: false
+    startup_mode: Maximized
+    title: alacritty
+    class:
+        instance: alacritty
+        general: terminal
+
+    gtk_theme_variant: dark
+
+scrolling:
+    history: 99999
+    multiplier: 5
+
+font:
+    normal:
+        Default:
+            monospace
+    size: 11
+    offset:
+        x: 0
+        y: 0
+    glyph_offset:
+        x: 0
+        y: 0
+
+colors:
+    primary:
+        background: '#08090e'
+        foreground: '#007dae'
+
+    cursor:
+        text: '#007dae'
+        cursor: '#007dae'
+
+    selection:
+        background: '#04050a'
+
+    normal:
+        black: '#08090e'
+        red: '#b40101'
+        green: '#26a816'
+        yellow: '#9a4b05'
+        blue: '#1310b2'
+        magenta: '#af25b2'
+        cyan: '#0ba1aa'
+        white: '#868883'
+    bright:
+        black: '#2b2a30'
+        red: '#fa2e28'
+        green: '#4bfa3a'
+        yellow: '#f2ba12'
+        blue: '#403dcd'
+        magenta: '#cf8dd2'
+        cyan: '#47e4db'
+        white: '#cacaca'
+
+
+visual_bell:
+    animation: Linear
+    duration: 1
+    color: '#08090e'
+
+background_opacity: 0.96
+dynamic_title: true
+cursor:
+    style: Underline
+    vi_mode_style: Block
+    unfocused_hollow: false
+    thickness: 0.2
+
+key_bindings:
+    - {key: Equals, mods: Control, action: IncreaseFontSize}
+    - {key: Equals, mods: Alt, action: ResetFontSize}
