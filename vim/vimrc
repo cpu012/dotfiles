@@ -1,0 +1,120 @@
+set nocompatible    "disable compatible at the begining of the config so values can be changed later
+
+" turn tabs into spaces + encoding + indentation
+set tabstop=6
+set softtabstop=4 
+set expandtab
+set smarttab
+set shiftwidth=4
+set autoindent
+set laststatus=2
+set smartindent
+set encoding=utf-8
+
+"astehtics
+colorscheme shloimy
+set cursorline
+set number relativenumber
+set incsearch
+"set cursorcolumn
+
+
+"plugins
+filetype plugin on
+
+"install vim-plug (requiers curl)
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+"install plugins
+call plug#begin('~/.vim/plugged')
+Plug 'ap/vim-css-color'
+Plug 'tmsvg/pear-tree'
+Plug 'itchyny/lightline.vim'
+Plug 'chrisbra/changesPlugin'
+Plug 'dense-analysis/ale'
+Plug 'maximbaz/lightline-ale'
+Plug 'farmergreg/vim-lastplace'
+Plug 'ervandew/supertab'
+call plug#end()
+
+
+"custom keybindings
+nmap U <C-r>
+nmap ; $a;<ESC>
+nmap <S-d> :read !date +\%A,\ \%B\ \%d\ \%Y\ \ \%I:\%M\ \%p<CR>$a<CR><ESC>
+nmap zj <Plug>(ale_next_wrap)
+nmap zk <Plug>(ale_previous_wrap)>
+
+"splits
+map <C-h> <C-w><C-h>
+map <C-j> <C-w><C-j>
+map <C-k> <C-w><C-k>
+map <C-l> <C-w><C-l>
+nmap r= <C-w><C-=>
+nmap se :vs 
+nmap sh :sp 
+nmap rh :vert res +2<CR>
+nmap rj :res +2<CR>
+nmap rl :vert res -2<CR>
+nmap rk :res -2<CR>
+set splitright
+set fillchars+=vert:\ 
+
+
+"lightline
+set noshowmode "don't show the mode since lightline does that anyway; that space below is usefull anyway
+let g:lightline = {
+      \ 'colorscheme': 'darcula',
+      \'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'readonly', 'filename', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ], 
+      \              [ 'percent' ],
+      \              [ 'filetype', 'fileformat', 'fileencoding' ],
+      \              [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos' ] ] 
+      \ },
+      \ 'component_expand': { 
+      \ 'linter_checking': 'lightline#ale#checking',
+      \ 'linter_infos': 'lightline#ale#infos',
+      \ 'linter_warnings': 'lightline#ale#warnings',
+      \ 'linter_errors': 'lightline#ale#errors',
+      \ 'linter_ok': 'lightline#ale#ok',
+      \ },
+      \ 'component_type': { 
+      \   'linter_checking': 'right',
+      \   'linter_infos': 'right',
+      \   'linter_warnings': 'warning',
+      \   'linter_errors': 'error',
+      \   'linter_ok': 'right',
+      \ },
+      \}
+"set indicators for lightline ale plugin
+let g:lightline#ale#indicator_checking = '...'
+let g:lightline#ale#indicator_infos = '* '
+let g:lightline#ale#indicator_warnings = '~ '
+let g:lightline#ale#indicator_errors = '>> '
+
+
+silent! EnableChanges "enable the changes plugin as silent so I don't get an error message
+
+"coding stuff
+"ale
+let g:ale_completion_tsserver_autoimport = 1
+
+"set indicators for ale
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '~'
+
+"set ale linters
+let g:ale_linters = { 
+    \ 'java': [ 'javac' ],
+    \ 'python': [ 'pylint' ],
+    \ 'vim': [ 'vint' ],
+    \ 'yaml': [ 'yamllint' ],
+    \ 'c': [ 'gcc' ],
+    \}
+let g:ale_completion_tsserver_autoimport = 1

@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =8
+let g:netrw_dirhist_8='/home/shloimy/config/neofetch'
+let g:netrw_dirhist_7='/home/shloimy/.config/Dharkael'
+let g:netrw_dirhist_6='/home/shloimy/.terminfo'
+let g:netrw_dirhist_5='/home/shloimy/.terminfo/s'
+let g:netrw_dirhist_4='/home/shloimy/.terminfo'
+let g:netrw_dirhist_3='/home/shloimy/.terminfo/s'
+let g:netrw_dirhist_2='/home/shloimy/.terminfo'
+let g:netrw_dirhist_1='/home/shloimy/source/st'
+let g:netrw_dirhist_0='/home/shloimy/.config/gtk-3.0'
+let g:netrw_dirhist_9='/home/shloimy/.config/termite'
