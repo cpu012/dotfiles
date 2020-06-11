@@ -33,6 +33,7 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 
 # window specific
 for_window [class="feh"] floating enable
+for_window [title="man"] floating enable
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -40,7 +41,7 @@ floating_modifier $mod
 # kill focused window
 bindsym $mod+x kill
 
-bindsym $mod+d exec --no-startup-id dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu
+bindsym $mod+d exec --no-startup-id dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu -l 25
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus between windows
@@ -125,10 +126,10 @@ bindsym $mod+plus mode "$modeScratch"
 bindsym $mod+p bar mode toggle bar-0
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+g exec --no-startup-id discord
-bindsym Print exec --no-startup-id ~/scripts/scrot/run.sh
-bindsym $mod+F1 exec --no-startup-id ~/scripts/img/run.sh
-bindsym $mod+F2 exec --no-startup-id ~/scripts/img/scrn.sh
-bindsym $mod+F3 exec $term -e man $(man -k . | dmenu -l 40 -p man: | awk '{print $1}')
+bindsym Print exec --no-startup-id ~/code/sh/scrot/run.sh
+bindsym $mod+F1 exec --no-startup-id ~/code/sh/img/run.sh
+bindsym $mod+F2 exec --no-startup-id ~/code/sh/img/scrn.sh
+bindsym $mod+F3 exec $term -T man -e man $(man -k . | dmenu -l 24 -p man: -w 1239 -x 221 -y 218 | awk '{print $1}')
 # mode keybindings
 bindsym $mod+r mode "$modeResize"
 bindsym $mod+t mode "$modeTerm"
