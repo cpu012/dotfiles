@@ -30,8 +30,25 @@ static float cwscale = 1.0;
 static float chscale = 1.0;
 
 // visual bell
-#define VBCELL x==0 || x==right || y==0 || y==bottom  /* border */
-static int vbelltimeout = 220;
+static int vbelltimeout = 250;
+static int bellvolume = 50;
+
+
+/* choose predefined visual-bell cells to inverse, or define your own logic */
+// #define VBCELL x==0 || x==right || y==0 || y==bottom  /* border */
+#define VBCELL 1  /* all cells - whole screen */
+// #define VBCELL y==bottom && x>right-2  /* bottom-right */
+
+static int vbellmode = 0;
+/* vbellmode: 0: invert cells. 1: draw a circle with these parameters:
+ * - base and outline colors (colorname index - see below)
+ * - radius: relative to window width, or if negative: relative to cell-width
+ * - position: relative to window width/height (0 and 1 are at the edges) */
+static int vbellcolor = 8;
+static int vbellcolor_outline = 7;
+static float vbellradius = 0.4;
+static float vbellx = 0.5;
+static float vbelly = 0.5;
 
 /*
  * word delimiter string
@@ -71,11 +88,6 @@ static unsigned int blinktimeout = 0;
  */
 static unsigned int cursorthickness = 5;
 
-/*
- * bell volume. It must be a value between -100 and 100. Use 0 for disabling
- * it
- */
-static int bellvolume = 20;
 
 /* default TERM value */
 char *termname = "st-256color";
