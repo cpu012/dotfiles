@@ -68,6 +68,7 @@ set fillchars+=vert:\
 "folds
 setlocal foldmethod=syntax
 set viewoptions=cursor,folds,slash,unix
+set nofoldenable
 
 
 "lightline
