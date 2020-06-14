@@ -6,12 +6,26 @@ dmenu \- dynamic menu
 .RB [ \-bfiv ]
 .RB [ \-l
 .IR lines ]
-.RB [ \-m
-.IR monitor ]
 .RB [ \-p
 .IR prompt ]
 .RB [ \-fn
 .IR font ]
+.RB [ \-m
+.IR monitor ]
+.RB [ \-H
+.IR histfile ]
+.RB [ \-it
+.IR text ]
+.P
+.RB [ \-x
+.IR xoffset ]
+.RB [ \-y
+.IR yoffset ]
+.RB [ \-w
+.IR width ]
+.RB [ \-h
+.IR height ]
+.P
 .RB [ \-nb
 .IR color ]
 .RB [ \-nf
@@ -20,10 +34,9 @@ dmenu \- dynamic menu
 .IR color ]
 .RB [ \-sf
 .IR color ]
-.RB [ \-w
+.P
+.RB [ \-id
 .IR windowid ]
-.RB [ \-it
-.IR text ]
 .P
 .BR dmenu_run " ..."
 .SH DESCRIPTION
@@ -101,8 +114,11 @@ defines the selected foreground color.
 .B \-v
 prints version information to stdout, then exits.
 .TP
-.BI \-w " windowid"
+.BI \-id " windowid"
 embed into windowid.
+.TP
+.BI \-H " histfile"
+file to store dmenu history in
 .TP
 .BI \-it " text".
 start with initial text input.

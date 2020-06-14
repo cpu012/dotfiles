@@ -872,7 +872,8 @@ usage(void)
 {
 	fputs("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor] [-H histfile] [-it text]\n"
             "             [-x xoffset] [-y yoffset] [-w width] [-h height]\n"
-	      "             [-nb color] [-nf color] [-sb color] [-sf color] [-id windowid]\n", stderr);
+	      "             [-nb color] [-nf color] [-sb color] [-sf color]\n" 
+            "             [-id windowid]\n", stderr);
 	exit(1);
 }
 
