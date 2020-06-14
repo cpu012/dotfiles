@@ -1,10 +1,15 @@
 --- x.c
 +++ x.c
-@@ -56,6 +56,7 @@ static void selpaste(const Arg *);
- static void zoom(const Arg *);
- static void zoomabs(const Arg *);
- static void zoomreset(const Arg *);
-+static void invert(const Arg *);
+@@ -1953,7 +1963,11 @@ run(void)
+ 					(handler[ev.type])(&ev);
+ 			}
  
- /* config.h for applying patches and the configuration. */
- #include "config.h"
+-			draw();
++			if (bellon) {
++				bellon = 0;
++				redraw();
++			}
++			else draw();
+ 			XFlush(xw.dpy);
+ 
+ 			if (xev && !FD_ISSET(xfd, &rfd))

@@ -5,7 +5,10 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "monospace:size=10:scalable=true:color=true:minspace=true:hinting=true:autohint=true:scale=1.5:spacing=2:embolden=true";
+static char *font = "monospace:size=11:antialias=true:autohint=true:scale=1.45:scalable=true:embolden=true";
+static char *font2[] = {
+    "Source Code Pro:size=11:antialias=true:autohint=true:scale=1.45:scalable=true:embolden=true"
+};
 static int borderpx = 2;
 
 /*
@@ -29,27 +32,6 @@ char *vtiden = "\033[?6c";
 static float cwscale = 1.0;
 static float chscale = 1.0;
 
-// visual bell
-static int vbelltimeout = 250;
-static int bellvolume = 50;
-
-
-/* choose predefined visual-bell cells to inverse, or define your own logic */
-// #define VBCELL x==0 || x==right || y==0 || y==bottom  /* border */
-#define VBCELL 1  /* all cells - whole screen */
-// #define VBCELL y==bottom && x>right-2  /* bottom-right */
-
-static int vbellmode = 0;
-/* vbellmode: 0: invert cells. 1: draw a circle with these parameters:
- * - base and outline colors (colorname index - see below)
- * - radius: relative to window width, or if negative: relative to cell-width
- * - position: relative to window width/height (0 and 1 are at the edges) */
-static int vbellcolor = 8;
-static int vbellcolor_outline = 7;
-static float vbellradius = 0.4;
-static float vbellx = 0.5;
-static float vbelly = 0.5;
-
 /*
  * word delimiter string
  *
@@ -59,7 +41,7 @@ wchar_t *worddelimiters = L" ";
 
 /* selection timeouts (in milliseconds) */
 static unsigned int doubleclicktimeout = 300;
-static unsigned int tripleclicktimeout = 800;
+static unsigned int tripleclicktimeout = 600;
 
 /* alt screens */
 int allowaltscreen = 1;
@@ -86,8 +68,13 @@ static unsigned int blinktimeout = 0;
 /*
  * thickness of underline and bar cursors
  */
-static unsigned int cursorthickness = 5;
+static unsigned int cursorthickness = 6;
 
+/*
+ * bell volume. It must be a value between -100 and 100. Use 0 for disabling
+ * it
+ */
+static int bellvolume = 60;
 
 /* default TERM value */
 char *termname = "st-256color";
@@ -110,12 +97,12 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.96;
+float alpha = 0.95;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#08090e",
+	"#080909",
 	"#b40101",
 	"#26a816",
 	"#9a4b05",
@@ -138,8 +125,8 @@ static const char *colorname[] = {
 
 	/* more colors can be added after 255 to use with DefaultXX */
 	"#007dae",
-      "#4b4a50",
-      "#08090e",
+	"#080909",
+      "#1a1919"
 };
 
 
@@ -148,15 +135,30 @@ static const char *colorname[] = {
  * foreground, background, cursor, reverse cursor
  */
 unsigned int defaultfg = 256;
-unsigned int defaultbg = 258;
+unsigned int defaultbg = 257;
 static unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 256;
-/* Colors used for selection */
-unsigned int selectionbg = 257;
-unsigned int selectionfg = 257;
+
+/* colors used for selection */
+unsigned int selectionbg = 258;
+unsigned int selectionfg = 256;
 /* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
 /* Else if 1 keep original foreground-color of each cell => more colors :) */
 static int ignoreselfg = 1;
+
+unsigned int const currentBg = 235, buffSize = 2048;
+/// [Vim Browse] Colors for search results currently on screen.
+unsigned int const highlightBg = 258, highlightFg = 256;
+char const wDelS[] = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~", wDelL[] = " \t";
+char *nmKeys [] = {              ///< Shortcusts executed in normal mode
+  "R/Building\nN", "r/Building\n", "X/juli@machine\nN", "x/juli@machine\n",
+  "Q?[Leaving vim, starting execution]\n","F/: error:\nN", "f/: error:\n", "DQf"
+};
+unsigned int const amountNmKeys = sizeof(nmKeys) / sizeof(*nmKeys);
+/// Style of the {command, search} string shown in the right corner (y,v,V,/)
+Glyph styleSearch = {' ', ATTR_ITALIC | ATTR_BOLD_FAINT, 7, 16};
+Glyph style[] = {{' ',ATTR_ITALIC|ATTR_FAINT,15,16}, {' ',ATTR_ITALIC,232,11},
+                 {' ', ATTR_ITALIC, 232, 4}, {' ', ATTR_ITALIC, 232, 12}};
 
 /*
  * Default shape of cursor
@@ -171,7 +173,7 @@ static unsigned int cursorshape = 4;
  * Default columns and rows numbers
  */
 
-static unsigned int cols = 95;
+static unsigned int cols = 80;
 static unsigned int rows = 24;
 
 /*
@@ -225,9 +227,7 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY,               XK_k,           kscrollup,      {.i =  3} },
-	{ MODKEY,               XK_j,           kscrolldown,    {.i =  3} },
-      { MODKEY,               XK_b,           keyboard_select,{      0} },
+	{ MODKEY,               XK_b,           normalMode,     {.i =  0} },
 	{ MODKEY,               XK_i,           invert,         { }       },
 	{ MODKEY,               XK_Return,      newterm,        {.i =  0} },
 };

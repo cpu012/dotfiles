@@ -1,7 +1,6 @@
 /* See LICENSE file for copyright and license details. */
 #include <ctype.h>
 #include <locale.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -29,24 +28,18 @@
 #define NUMBERSBUFSIZE        (NUMBERSMAXDIGITS * 2) + 1
 
 /* enums */
-enum { SchemeNorm, SchemeSel, SchemeNormHighlight, SchemeSelHighlight,
-       SchemeOut, SchemeLast }; /* color schemes */
-
+enum { SchemeNorm, SchemeSel, SchemeOut, SchemeNormHighlight, SchemeSelHighlight, SchemeLast }; /* color schemes */
 
 struct item {
 	char *text;
 	struct item *left, *right;
 	int out;
-	double distance;
 };
 
 static char numbers[NUMBERSBUFSIZE] = "";
 static char text[BUFSIZ] = "";
 static char *embed;
 static int bh, mw, mh;
-static int dmx = 0; /* put dmenu at this x offset */
-static int dmy = 0; /* put dmenu at this y offset (measured from the bottom if topbar is 0) */
-static unsigned int dmw = 0; /* make dmenu this wide */
 static int inputw = 0, promptw;
 static int lrpad; /* sum of left and right padding */
 static size_t cursor;
@@ -54,6 +47,9 @@ static struct item *items = NULL;
 static struct item *matches, *matchend;
 static struct item *prev, *curr, *next, *sel;
 static int mon = -1, screen;
+static int dmx = 0; /* put dmenu at this x offset */
+static int dmy = 0; /* put dmenu at this y offset (measured from the bottom if topbar is 0) */
+static unsigned int dmw = 0; /* make dmenu this wide */
 
 static Atom clip, utf8;
 static Display *dpy;
@@ -128,61 +124,6 @@ cistrstr(const char *s, const char *sub)
 }
 
 static void
-drawhighlights(struct item *item, int x, int y, int maxw)
-{
-	int i, indent;
-	char *highlight;
-	char c;
-
-	if (!(strlen(item->text) && strlen(text)))
-		return;
-
-	drw_setscheme(drw, scheme[item == sel
-	                   ? SchemeSelHighlight
-	                   : SchemeNormHighlight]);
-	for (i = 0, highlight = item->text; *highlight && text[i];) {
-		if (*highlight == text[i]) {
-			/* get indentation */
-			c = *highlight;
-			*highlight = '\0';
-			indent = TEXTW(item->text);
-			*highlight = c;
-
-			/* highlight character */
-			c = highlight[1];
-			highlight[1] = '\0';
-			drw_text(
-				drw,
-				x + indent - (lrpad / 2),
-				y,
-				MIN(maxw - indent, TEXTW(highlight) - lrpad),
-				bh, 0, highlight, 0
-			);
-			highlight[1] = c;
-			i++;
-		}
-		highlight++;
-	}
-}
-
-
-static int
-drawitem(struct item *item, int x, int y, int w)
-{
-	int r;
-	if (item == sel)
-		drw_setscheme(drw, scheme[SchemeSel]);
-	else if (item->out)
-		drw_setscheme(drw, scheme[SchemeOut]);
-	else
-		drw_setscheme(drw, scheme[SchemeNorm]);
-
-	r = drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
-	drawhighlights(item, x, y, w);
-	return r;
-}
-
-static void
 recalculatenumbers()
 {
 	unsigned int numer = 0, denom = 0;
@@ -198,6 +139,58 @@ recalculatenumbers()
 }
 
 static void
+drawhighlights(struct item *item, int x, int y, int maxw)
+{
+	char restorechar, tokens[sizeof text], *highlight,  *token;
+	int indentx, highlightlen;
+
+	drw_setscheme(drw, scheme[item == sel ? SchemeSelHighlight : SchemeNormHighlight]);
+	strcpy(tokens, text);
+	for (token = strtok(tokens, " "); token; token = strtok(NULL, " ")) {
+		highlight = fstrstr(item->text, token);
+		while (highlight) {
+			// Move item str end, calc width for highlight indent, & restore
+			highlightlen = highlight - item->text;
+			restorechar = *highlight;
+			item->text[highlightlen] = '\0';
+			indentx = TEXTW(item->text);
+			item->text[highlightlen] = restorechar;
+
+			// Move highlight str end, draw highlight, & restore
+			restorechar = highlight[strlen(token)];
+			highlight[strlen(token)] = '\0';
+			drw_text(
+				drw,
+				x + indentx - (lrpad / 2) - 1,
+				y,
+				MIN(maxw - indentx, TEXTW(highlight) - lrpad),
+				bh, 0, highlight, 0
+			);
+			highlight[strlen(token)] = restorechar;
+
+			if (strlen(highlight) - strlen(token) < strlen(token)) break;
+			highlight = fstrstr(highlight + strlen(token), token);
+		}
+	}
+}
+
+static int
+drawitem(struct item *item, int x, int y, int w)
+{
+	if (item == sel)
+		drw_setscheme(drw, scheme[SchemeSel]);
+	else if (item->out)
+		drw_setscheme(drw, scheme[SchemeOut]);
+	else
+		drw_setscheme(drw, scheme[SchemeNorm]);
+
+	int r = drw_text(drw, x, y, w, bh, lrpad / 2, item->text, 0);
+	drawhighlights(item, x, y, w);
+	return r;
+}
+
+
+static void
 drawmenu(void)
 {
 	static int curpos, oldcurlen;
@@ -206,7 +199,7 @@ drawmenu(void)
 	int curlen, rcurlen;
 
 	drw_setscheme(drw, scheme[SchemeNorm]);
-	drw_rect(drw, 0, 0, mw, mh, 1, 1);
+	drw_rect(drw, 0, 0 + (bh-fh)/2, mw, mh, 1, 1);
 
 	if (prompt && *prompt) {
 		drw_setscheme(drw, scheme[SchemeSel]);
@@ -241,7 +234,7 @@ drawmenu(void)
 		w = TEXTW("<");
 		if (curr->left) {
 			drw_setscheme(drw, scheme[SchemeNorm]);
-			drw_text(drw, x, 0, w + (bh-fh)/2, bh, lrpad / 2, "<", 0);
+			drw_text(drw, x, 0, w, bh, lrpad / 2, "<", 0);
 		}
 		x += w;
 		for (item = curr; item != next; item = item->right)
@@ -292,94 +285,9 @@ grabkeyboard(void)
 	die("cannot grab keyboard");
 }
 
-int
-compare_distance(const void *a, const void *b)
-{
-	struct item *da = *(struct item **) a;
-	struct item *db = *(struct item **) b;
-
-	if (!db)
-		return 1;
-	if (!da)
-		return -1;
-
-	return da->distance == db->distance ? 0 : da->distance < db->distance ? -1 : 1;
-}
-
-void
-fuzzymatch(void)
-{
-	/* bang - we have so much memory */
-	struct item *it;
-	struct item **fuzzymatches = NULL;
-	char c;
-	int number_of_matches = 0, i, pidx, sidx, eidx;
-	int text_len = strlen(text), itext_len;
-
-	matches = matchend = NULL;
-
-	/* walk through all items */
-	for (it = items; it && it->text; it++) {
-		if (text_len) {
-			itext_len = strlen(it->text);
-			pidx = 0; /* pointer */
-			sidx = eidx = -1; /* start of match, end of match */
-			/* walk through item text */
-			for (i = 0; i < itext_len && (c = it->text[i]); i++) {
-				/* fuzzy match pattern */
-				if (!fstrncmp(&text[pidx], &c, 1)) {
-					if(sidx == -1)
-						sidx = i;
-					pidx++;
-					if (pidx == text_len) {
-						eidx = i;
-						break;
-					}
-				}
-			}
-			/* build list of matches */
-			if (eidx != -1) {
-				/* compute distance */
-				/* add penalty if match starts late (log(sidx+2))
-				 * add penalty for long a match without many matching characters */
-				it->distance = log(sidx + 2) + (double)(eidx - sidx - text_len);
-				/* fprintf(stderr, "distance %s %f\n", it->text, it->distance); */
-				appenditem(it, &matches, &matchend);
-				number_of_matches++;
-			}
-		} else {
-			appenditem(it, &matches, &matchend);
-		}
-	}
-
-	if (number_of_matches) {
-		/* initialize array with matches */
-		if (!(fuzzymatches = realloc(fuzzymatches, number_of_matches * sizeof(struct item*))))
-			die("cannot realloc %u bytes:", number_of_matches * sizeof(struct item*));
-		for (i = 0, it = matches; it && i < number_of_matches; i++, it = it->right) {
-			fuzzymatches[i] = it;
-		}
-		/* sort matches according to distance */
-		qsort(fuzzymatches, number_of_matches, sizeof(struct item*), compare_distance);
-		/* rebuild list of matches */
-		matches = matchend = NULL;
-		for (i = 0, it = fuzzymatches[i];  i < number_of_matches && it && \
-				it->text; i++, it = fuzzymatches[i]) {
-			appenditem(it, &matches, &matchend);
-		}
-		free(fuzzymatches);
-	}
-	curr = sel = matches;
-	calcoffsets();
-}
-
 static void
 match(void)
 {
-	if (fuzzy) {
-		fuzzymatch();
-		return;
-	}
 	static char **tokv = NULL;
 	static int tokn = 0;
 
@@ -855,6 +763,7 @@ run(void)
 	}
 }
 
+
 static void
 setup(void)
 {
@@ -918,9 +827,9 @@ setup(void)
 		if (!XGetWindowAttributes(dpy, parentwin, &wa))
 			die("could not get embedding window attributes: 0x%lx",
 			    parentwin);
-		x = dmx;
-		y = topbar ? dmy : wa.height - mh - dmy;
-		mw = (dmw>0 ? dmw : wa.width);
+		x = 0;
+		y = topbar ? 0 : wa.height - mh;
+		mw = wa.width;
 	}
 	promptw = (prompt && *prompt) ? TEXTW(prompt) - lrpad / 4 : 0;
 	inputw = MIN(inputw, mw/3);
@@ -961,10 +870,9 @@ setup(void)
 static void
 usage(void)
 {
-	fputs("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor] [-it text] [-H histfile]\n"
-            "             [-h lineheight] [-x xoffset] [-y yoffset] [-w width]\n"
-	      "             [-nb color] [-nf color] [-sb color] [-sf color]\n"
-	      "             [-nhb color] [-nhf color] [-shb color] [-shf color] [-id windowid]\n", stderr);
+	fputs("usage: dmenu [-bfiv] [-l lines] [-p prompt] [-fn font] [-m monitor] [-H histfile] [-it text]\n"
+            "             [-x xoffset] [-y yoffset] [-w width] [-h height]\n"
+	      "             [-nb color] [-nf color] [-sb color] [-sf color] [-id windowid]\n", stderr);
 	exit(1);
 }
 
@@ -983,8 +891,6 @@ main(int argc, char *argv[])
 			topbar = 0;
 		else if (!strcmp(argv[i], "-f"))   /* grabs keyboard before reading stdin */
 			fast = 1;
-		else if (!strcmp(argv[i], "-F"))   /* grabs keyboard before reading stdin */
-			fuzzy = 0;
 		else if (!strcmp(argv[i], "-i")) { /* case-insensitive item matching */
 			fstrncmp = strncasecmp;
 			fstrstr = cistrstr;
@@ -1019,14 +925,6 @@ main(int argc, char *argv[])
 			colors[SchemeSel][ColBg] = argv[++i];
 		else if (!strcmp(argv[i], "-sf"))  /* selected foreground color */
 			colors[SchemeSel][ColFg] = argv[++i];
-		else if (!strcmp(argv[i], "-nhb")) /* normal hi background color */
-			colors[SchemeNormHighlight][ColBg] = argv[++i];
-		else if (!strcmp(argv[i], "-nhf")) /* normal hi foreground color */
-			colors[SchemeNormHighlight][ColFg] = argv[++i];
-		else if (!strcmp(argv[i], "-shb")) /* selected hi background color */
-			colors[SchemeSelHighlight][ColBg] = argv[++i];
-		else if (!strcmp(argv[i], "-shf")) /* selected hi foreground color */
-			colors[SchemeSelHighlight][ColFg] = argv[++i];
 		else if (!strcmp(argv[i], "-id"))   /* embedding window id */
 			embed = argv[++i];
 		else if (!strcmp(argv[i], "-it")) {   /* embedding window id */
@@ -1050,6 +948,7 @@ main(int argc, char *argv[])
 	if (!drw_fontset_create(drw, fonts, LENGTH(fonts)))
 		die("no fonts could be loaded.");
 	lrpad = drw->fonts->h;
+	loadhistory();
 
 #ifdef __OpenBSD__
 	if (pledge("stdio rpath", NULL) == -1)
@@ -1059,7 +958,6 @@ main(int argc, char *argv[])
 	if (fast && !isatty(0)) {
 		grabkeyboard();
 		readstdin();
-	      loadhistory();
 	} else {
 		readstdin();
 		grabkeyboard();

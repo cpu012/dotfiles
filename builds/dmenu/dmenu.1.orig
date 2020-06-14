@@ -20,18 +20,8 @@ dmenu \- dynamic menu
 .IR color ]
 .RB [ \-sf
 .IR color ]
-.RB [ \-nhb
-.IR color ]
-.RB [ \-nhf
-.IR color ]
-.RB [ \-shb
-.IR color ]
-.RB [ \-shf
-.IR color ]
 .RB [ \-w
 .IR windowid ]
-.RB [ \-it
-.IR text ]
 .P
 .BR dmenu_run " ..."
 .SH DESCRIPTION
@@ -78,6 +68,9 @@ is present, the measurement will use the given monitor.
 .BI \-w " width"
 sets the width of the dmenu window.
 .TP
+.BI \-h " height"
+dmenu uses a menu line of at least 'height' pixels tall, but no less than 8.
+.TP
 .BI \-m " monitor"
 dmenu is displayed on the monitor number supplied. Monitor numbers are starting
 from 0.
@@ -103,26 +96,11 @@ defines the selected background color.
 .BI \-sf " color"
 defines the selected foreground color.
 .TP
-.BI \-nhb " color"
-defines the normal highlight background color.
-.TP
-.BI \-nhf " color"
-defines the normal highlight foreground color.
-.TP
-.BI \-shb " color"
-defines the selected highlight background color.
-.TP
-.BI \-shf " color"
-defines the selected highlight foreground color.
-.TP
 .B \-v
 prints version information to stdout, then exits.
 .TP
 .BI \-w " windowid"
 embed into windowid.
-.TP
-.BI \-it " text".
-start with initial text input.
 .SH USAGE
 dmenu is completely controlled by the keyboard.  Items are selected using the
 arrow keys, page up, page down, home, and end.
