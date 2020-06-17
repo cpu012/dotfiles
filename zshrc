@@ -1,3 +1,4 @@
+### ~/.zshrc
 # variables
 PATH=$PATH:$HOME/bin     #set the path
 TERMINAL=st

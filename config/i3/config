@@ -96,8 +96,8 @@ mode "$modeSys" {
 # resize mode
 mode "$modeResize" {
         bindsym h resize shrink width 3 px or 3 ppt
-        bindsym j resize grow height 3 px or 3 ppt
-        bindsym k resize shrink height 3 px or 3 ppt
+        bindsym k resize grow height 3 px or 3 ppt
+        bindsym j resize shrink height 3 px or 3 ppt
         bindsym l resize grow width 3 px or 3 ppt
         bindsym i  mode "default"
 }
@@ -183,13 +183,14 @@ bar {
     position top
     workspace_buttons no
     font pango:monospace 10
-    tray_output none
+    tray_output primary
+    tray_padding 0
     separator_symbol "|"
     Height 15
     bindsym $mod+p mode toggle
     # set the bar colors
     colors {
-	    separator    #$blue
+	  separator    #$blue
         background   #$background1d6
         statusline   #$red2ef
         #            border        background       text
