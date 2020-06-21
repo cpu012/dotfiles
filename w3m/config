@@ -1,0 +1,6 @@
+confirm_qq 0
+frame 100
+pixel_per_line 48
+pixel_per_char 24
+image_scale 100
+bg_color 0

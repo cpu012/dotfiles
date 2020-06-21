@@ -1,3 +1,4 @@
+#~/.config/i3/config
 #variables
 #colorscheme variables
 set $background1 080909
@@ -41,7 +42,7 @@ floating_modifier $mod
 # kill focused window
 bindsym $mod+x kill
 
-bindsym $mod+d exec --no-startup-id dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu -l 25
+bindsym $mod+d exec --no-startup-id dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu -l 25 -H ~/.cache/dmenu/dmenu_run
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus between windows
@@ -124,6 +125,7 @@ bindsym $mod+b exec --no-startup-id $browser
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus mode "$modeScratch"
 bindsym $mod+p bar mode toggle bar-0
+bindsym $mod+o exec emojimenu
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+g exec --no-startup-id discord
 bindsym Print exec --no-startup-id ~/code/sh/scrot/run.sh
@@ -134,7 +136,6 @@ bindsym $mod+F3 exec $term -T man -e man $(man -k . | dmenu -l 24 -p man: -w 123
 bindsym $mod+r mode "$modeResize"
 bindsym $mod+t mode "$modeTerm"
 bindsym $mod+q mode "$modeSys"
-bindsym $mod+o mode "$modeCommand"
 bindsym $mod+m mode "$modeX11"
 
 # create workspace names
@@ -220,7 +221,7 @@ client.placeholder      #$background1 #$background1 #$forground2 #$red2    #$blu
 # startup executions
 exec cd
 exec_always bluetoothctl power on
-#exec_always ~/.config/i3/bat.sh
+exec_always ~/.config/i3/bat.sh
 
 # gaps 
 gaps inner 11

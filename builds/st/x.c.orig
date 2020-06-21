@@ -14,12 +14,12 @@
 #include <X11/keysym.h>
 #include <X11/Xft/Xft.h>
 #include <X11/XKBlib.h>
-#include "hb.h"
 
 char *argv0;
 #include "arg.h"
 #include "st.h"
 #include "win.h"
+#include "hb.h"
 #include "normalMode.h"
 
 /* types used in config.h */
@@ -60,8 +60,8 @@ static void selpaste(const Arg *);
 static void zoom(const Arg *);
 static void zoomabs(const Arg *);
 static void zoomreset(const Arg *);
-static void invert(const Arg *);
 static void ttysend(const Arg *);
+static void invert(const Arg *);
 
 /* config.h for applying patches and the configuration. */
 #include "config.h"
@@ -2245,27 +2245,4 @@ run:
 	run();
 
 	return 0;
-}
-
-void
-opencopied(const Arg *arg)
-{
-	const size_t max_cmd = 2048;
-	const char *clip = xsel.clipboard;
-	if(!clip) {
-		fprintf(stderr, "Warning: nothing copied to clipboard\n");
-		return;
-	}
-
-	/* account for space/quote (3) and \0 (1) and & (1) */
-	char cmd[max_cmd + strlen(clip) + 5];
-	strncpy(cmd, (char *)arg->v, max_cmd);
-	cmd[max_cmd] = '\0';
-
-	strcat(cmd, " \"");
-	strcat(cmd, clip);
-	strcat(cmd, "\"");
-	strcat(cmd, "&");
-
-	system(cmd);
 }

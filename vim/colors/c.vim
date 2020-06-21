@@ -27,7 +27,7 @@ hi Function  ctermfg=6
 hi cFunction  ctermfg=6
 hi Statement ctermfg=3 cterm=Bold
 hi PreProc ctermfg=15
-hi type ctermfg=13
+hi Type ctermfg=13
 hi Boolean ctermfg=3 cterm=Bold
 hi CursorLineNr ctermbg=235 ctermfg=11 cterm=None cterm=Bold
 hi CursorLine ctermbg=235 cterm=None
@@ -42,10 +42,12 @@ hi Error ctermfg=9 cterm=underline ctermbg=None
 hi ErrorMsg ctermfg=9 cterm=underline ctermbg=None
 hi WarningMsg ctermfg=11 cterm=underline ctermbg=None
 hi ALEError ctermfg=9 cterm=underline
-hi ALEError ctermfg=11 cterm=underline
+hi ALEWarning ctermfg=11 cterm=underline
 hi ALEErrorSign ctermbg=0 ctermfg=9 cterm=bold
 hi ALEWarningSign ctermbg=0 ctermfg=11
 hi Pmenu ctermfg=15 ctermbg=8
 hi PmenuSel ctermbg=234 ctermfg=13
 hi PmenuThumb ctermbg=0
 hi PmenuSbar ctermbg=8
+hi Folded ctermbg=236 ctermfg=12
+hi ColorColumn ctermbg=238

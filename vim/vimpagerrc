@@ -1,0 +1,27 @@
+if !exists('g:vimpager')
+    let g:vimpager = {}
+endif
+
+if !exists('g:less')
+    let g:less     = {}
+endif
+
+colo c
+set cursorline
+hi CursorLine ctermbg=None cterm=None
+set encoding=utf-8
+set incsearch
+set ignorecase
+
+"plugins
+filetype plugin on
+"install vim-plug (requiers curl)
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+Plug 'ap/vim-css-color'
+call plug#end()

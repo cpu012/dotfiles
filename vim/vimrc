@@ -1,4 +1,4 @@
-set nocompatible    "disable compatible at the begining of the config so values can be changed later
+set nocompatible    "disable 'compatible' at the begining of the config so values can be changed later
 
 " turn tabs into spaces + encoding + indentation
 set tabstop=6
@@ -11,8 +11,14 @@ set laststatus=2
 set smartindent
 set encoding=utf-8
 
+"dont wrap lines
+set nowrap
+"leader key
+let mapleader=' '
+
 "astehtics and searching
 colorscheme c
+set colorcolumn=92
 set cursorline
 set number relativenumber
 set incsearch
@@ -45,28 +51,29 @@ call plug#end()
 
 "custom keybindings
 nmap U <C-r>
-nmap ; $a;<ESC>
-nmap <S-d> :read !date +\%A,\ \%B\ \%d\ \%Y\ \ \%I:\%M\ \%p<CR>$a<CR><ESC>
-nmap zj <Plug>(ale_next_wrap)
-nmap zk <Plug>(ale_previous_wrap)>
+nmap <leader>; $a;<ESC>
+nmap <leader>d :read !date +\%A,\ \%B\ \%d\ \%Y\ \ \%I:\%M\ \%p<CR>$a<CR><ESC>
+nmap <leader>ej <Plug>(ale_next_wrap)
+nmap <leader>ek <Plug>(ale_previous_wrap)>
 
 "splits
 map <C-h> <C-w><C-h>
 map <C-j> <C-w><C-j>
 map <C-k> <C-w><C-k>
 map <C-l> <C-w><C-l>
-nmap r= <C-w><C-=>
-nmap se :vs 
-nmap sh :sp 
-nmap rh :vert res +2<CR>
-nmap rj :res +2<CR>
-nmap rl :vert res -2<CR>
-nmap rk :res -2<CR>
+nmap <leader>= <C-w><C-=>
+nmap <leader>se :vs 
+nmap <leader>sh :sp 
+nmap <leader>rh :vert res +2<CR>
+nmap <leader>rj :res +2<CR>
+nmap <leader>rl :vert res -2<CR>
+nmap <leader>rk :res -2<CR>
 set splitright
 set fillchars+=vert:\ 
 
 "folds
-setlocal foldmethod=syntax
+autocmd BufNewFile,BufRead * setlocal foldmethod=manual
+autocmd BufNewFile,BufRead *.c setlocal foldmethod=syntax
 set viewoptions=cursor,folds,slash,unix
 set nofoldenable
 
@@ -81,7 +88,7 @@ let g:lightline = {
       \   'right': [ [ 'lineinfo' ], 
       \              [ 'percent' ],
       \              [ 'filetype', 'fileformat', 'fileencoding' ],
-      \              [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos' ] ] 
+      \              [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_infos', 'linter_ok' ] ] 
       \ },
       \ 'component_expand': { 
       \ 'linter_checking': 'lightline#ale#checking',
@@ -99,10 +106,11 @@ let g:lightline = {
       \ },
       \}
 "set indicators for lightline ale plugin
-let g:lightline#ale#indicator_checking = '...'
-let g:lightline#ale#indicator_infos = '* '
-let g:lightline#ale#indicator_warnings = '~ '
-let g:lightline#ale#indicator_errors = '>> '
+let g:lightline#ale#indicator_checking = '⚙ '
+let g:lightline#ale#indicator_infos = '️️️️️️️️ℹ '
+let g:lightline#ale#indicator_warnings = '⚠️ '
+let g:lightline#ale#indicator_errors = '❌ '
+let g:lightline#ale#indicator_ok = '✔ '
 
 
 silent! EnableChanges "enable the changes plugin as silent so I don't get an error message
@@ -112,8 +120,8 @@ silent! EnableChanges "enable the changes plugin as silent so I don't get an err
 let g:ale_completion_tsserver_autoimport = 1
 
 "set indicators for ale
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '~'
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠'
 
 "set ale linters
 let g:ale_linters = { 

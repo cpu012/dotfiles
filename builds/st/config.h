@@ -7,9 +7,10 @@
  */
 static char *font = "monospace:size=11:antialias=true:autohint=true:scale=1.45:scalable=true:embolden=true";
 static char *font2[] = {
-    "Source Code Pro:size=11:antialias=true:autohint=true:scale=1.45:scalable=true:embolden=true"
+    "Twemoji:size=11",
+    "Symbola:size=11"
 };
-static int borderpx = 2;
+static int borderpx = 4;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -56,8 +57,8 @@ int allowwindowops = 1;
  * near minlatency, but it waits longer for slow updates to avoid partial draw.
  * low minlatency will tear/flicker more, as it can "detect" idle too early.
  */
-static double minlatency = 8;
-static double maxlatency = 33;
+static double minlatency = 12;
+static double maxlatency = 40;
 
 /*
  * blinking timeout (set to 0 to disable blinking) for the terminal blinking
@@ -68,7 +69,7 @@ static unsigned int blinktimeout = 0;
 /*
  * thickness of underline and bar cursors
  */
-static unsigned int cursorthickness = 6;
+static unsigned int cursorthickness = 4;
 
 /*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling

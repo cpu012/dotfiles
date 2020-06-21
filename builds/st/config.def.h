@@ -142,7 +142,7 @@ unsigned int defaultbg = 258;
 static unsigned int defaultcs = 256;
 static unsigned int defaultrcs = 257;
 
-/* colors used for selection */
+/* Colors used for selection */
 unsigned int selectionbg = 257;
 unsigned int selectionfg = 7;
 /* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
@@ -231,10 +231,8 @@ static Shortcut shortcuts[] = {
 	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ MODKEY,               XK_c,           normalMode,     {.i =  0} },
-	{ MODKEY,               XK_l,           copyurl,        {.i =  0} },
 	{ TERMMOD,              XK_X,           invert,         { }       },
 	{ TERMMOD,              XK_Return,      newterm,        {.i =  0} },
-	{ MODKEY,               XK_o,           opencopied,     {.v = "xdg-open"} },
 };
 
 /*
