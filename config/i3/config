@@ -180,7 +180,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # start a bar with transparancy
 bar {
     i3bar_command i3bar -b bar-1 -t
-    status_command i3status -c ~/.config/i3/status # put information on that bar
+    status_command i3status --config ~/.config/i3/status # put information on the bar
     position top
     workspace_buttons no
     font pango:monospace 10

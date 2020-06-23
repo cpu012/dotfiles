@@ -18,7 +18,7 @@ let mapleader=' '
 
 "astehtics and searching
 colorscheme c
-set colorcolumn=92
+set colorcolumn=100
 set cursorline
 set number relativenumber
 set incsearch

@@ -5,7 +5,7 @@ if exists('syntax_on')
 endif
 
 let g:colors_name = 'c'
-hi Todo cterm=bold ctermfg=9 ctermbg=0
+hi Todo cterm=bold ctermfg=9 ctermbg=None
 hi Special ctermfg=11
 hi SpecialKey ctermfg=3
 hi Directory ctermfg=5

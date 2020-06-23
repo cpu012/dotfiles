@@ -10,7 +10,7 @@ static char *font2[] = {
     "Twemoji:size=11",
     "Symbola:size=11"
 };
-static int borderpx = 4;
+static int borderpx = 0;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -75,7 +75,7 @@ static unsigned int cursorthickness = 4;
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
  * it
  */
-static int bellvolume = 60;
+static int bellvolume = -100;
 
 /* default TERM value */
 char *termname = "st-256color";
@@ -98,12 +98,12 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.95;
+float alpha = 0.92;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
-	"#080909",
+	"#070808",
 	"#b40101",
 	"#26a816",
 	"#9a4b05",
@@ -225,12 +225,12 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,               XK_g,           zoomreset,      {.f =  0} },
 	{ MODKEY,               XK_c,           clipcopy,       {.i =  0} },
 	{ MODKEY,               XK_v,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
+	{ TERMMOD,              XK_V,           selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ MODKEY,               XK_b,           normalMode,     {.i =  0} },
 	{ MODKEY,               XK_i,           invert,         { }       },
 	{ MODKEY,               XK_Return,      newterm,        {.i =  0} },
+	{ MODKEY,               XK_u,           copyurl,        {.i =  0} },
 };
 
 /*
