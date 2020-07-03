@@ -219,7 +219,6 @@ client.placeholder      #$background1 #$background1 #$forground2 #$red2    #$blu
 
 
 # startup executions
-exec cd
 exec_always bluetoothctl power on
 exec_always ~/.config/i3/bat.sh
 
