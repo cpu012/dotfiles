@@ -1,9 +1,12 @@
-### ~/.zshrc
+# ~/.zshrc
 # variables
 PATH=$PATH:$HOME/bin     #set the path
 TERMINAL=st
 export EDITOR=vim
 BROWSER='qutebrowser'
+RTV_BROWSER=$BROWSER
+RTV_EDITOR=$EDITOR
+
 
 # command history
 HISTFILE=~/.cache/zsh/history
@@ -37,29 +40,31 @@ bindkey '\e' vi-cmd-mode
 
 # prompts
 PS1=$'%{\e[0;100;94m%} %2~ %{\e[0;90m%}%{\e[0m%} '
-RPS1=$'%{\e[0;38;5;238m%}%{%}%{\e[48;5;238;93m%} $(vi_mode_status) %{\e[48;5;235;94m%} %! %{\e[91;1m%}%(?..%? )%{\e[0m%}'
+RPS1=$'%{\e[0;38;5;238m%}%{%}%{\e[48;5;238;38;5;229m%} $(vi_mode_status) %{\e[91;1m%}%(?..%? )%{\e[0m%}'
 #
 
 # aliases
 alias clr='clear'
-alias la='ls -Al'
-alias ll='ls -Al | less'
+alias ls='ls --color=auto -lH'
+alias la='ls --color=auto -AlH'
+alias ll='ls --color=auto -AlH | vimpager'
 alias gc='git clone'
 alias jec='mutt -F ~/.config/jecMail.conf'
 alias ...='cd ../../'
 alias ....='cd ../../../'
 alias .....='cd ../../../../'
 alias :q='exit'
-alias ls='ls --color=auto'
+alias cpr='cp -r'
+alias rmr='rm -r'
 
 # colors
-LS_COLORS="di=1;31:*.c=93:ex=33;4;1:*.py=93:*.h=93:*.java=93:fi=35:bd=107;94;1"
+LS_COLORS="di=1;36:*.c=93:ex=33;4;1:*.py=93:*.h=93:*.java=93:fi=35:bd=107;94;1"
 
 # completeions (with compinstall) -- some of the comments are reqiered by compinstall
 # The following lines were added by compinstall
 
 zstyle ':completion:*' auto-description '      |  %d'
-zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' completer _expand _complete _ignored _approximate
 zstyle ':completion:*' expand prefix suffix
 zstyle ':completion:*' file-sort size reverse
 zstyle ':completion:*' group-name ''
@@ -118,7 +123,7 @@ ZSH_HIGHLIGHT_STYLES[redirection]='fg=13'
 ZSH_HIGHLIGHT_STYLES[comment]='fg=7'
 ZSH_HIGHLIGHT_STYLES[default]='none'
 ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=13'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=3'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=11'
 # brakcets
 ZSH_HIGHLIGHT_STYLES[cursor-matchingbracket]='underline'
 ZSH_HIGHLIGHT_STYLES[bracket-level-1]='fg=3'
