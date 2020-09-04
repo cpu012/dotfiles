@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "monospace:size=11:antialias=true:autohint=true:scale=1.45:scalable=true:embolden=true";
+static char *font = "monospace:size=9:antialias=true:autohint=true:scale=1.5:scalable=true:embolden=true";
 static char *font2[] = {
     "Twemoji:size=11",
     "Symbola:size=11"
@@ -69,7 +69,7 @@ static unsigned int blinktimeout = 0;
 /*
  * thickness of underline and bar cursors
  */
-static unsigned int cursorthickness = 4;
+static unsigned int cursorthickness = 3;
 
 /*
  * bell volume. It must be a value between -100 and 100. Use 0 for disabling
@@ -97,16 +97,13 @@ char *termname = "st-256color";
  */
 unsigned int tabspaces = 8;
 
-/* bg opacity */
-float alpha = 0.92;
-
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
 	/* 8 normal colors */
 	"#070808",
 	"#b40101",
 	"#26a816",
-	"#9a4b05",
+	"#f2aa12",
 	"#1310b2",
 	"#af25b2",
 	"#0ba1aa",
@@ -116,15 +113,14 @@ static const char *colorname[] = {
 	"#2b2a30",
 	"#fa2e28",
 	"#4bfa3a",
-	"#f2ba12",
+	"#fff074",
 	"#403dcd",
 	"#cf8dd2",
 	"#47e4db",
 	"#cacaca",
+      [255] = 0,
 
-	[255] = 0,
-
-	/* more colors can be added after 255 to use with DefaultXX */
+      /* more colors can be added after 255 to use with DefaultXX */
 	"#007dae",
 	"#080909",
       "#1a1919"
@@ -143,23 +139,7 @@ static unsigned int defaultrcs = 256;
 /* colors used for selection */
 unsigned int selectionbg = 258;
 unsigned int selectionfg = 256;
-/* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
-/* Else if 1 keep original foreground-color of each cell => more colors :) */
 static int ignoreselfg = 1;
-
-unsigned int const currentBg = 235, buffSize = 2048;
-/// [Vim Browse] Colors for search results currently on screen.
-unsigned int const highlightBg = 258, highlightFg = 256;
-char const wDelS[] = "!\"#$%&'()*+,-./:;<=>?@[\\]^`{|}~", wDelL[] = " \t";
-char *nmKeys [] = {              ///< Shortcusts executed in normal mode
-  "R/Building\nN", "r/Building\n", "X/juli@machine\nN", "x/juli@machine\n",
-  "Q?[Leaving vim, starting execution]\n","F/: error:\nN", "f/: error:\n", "DQf"
-};
-unsigned int const amountNmKeys = sizeof(nmKeys) / sizeof(*nmKeys);
-/// Style of the {command, search} string shown in the right corner (y,v,V,/)
-Glyph styleSearch = {' ', ATTR_ITALIC | ATTR_BOLD_FAINT, 7, 16};
-Glyph style[] = {{' ',ATTR_ITALIC|ATTR_FAINT,15,16}, {' ',ATTR_ITALIC,232,11},
-                 {' ', ATTR_ITALIC, 232, 4}, {' ', ATTR_ITALIC, 232, 12}};
 
 /*
  * Default shape of cursor
@@ -227,7 +207,6 @@ static Shortcut shortcuts[] = {
 	{ MODKEY,               XK_v,           clippaste,      {.i =  0} },
 	{ TERMMOD,              XK_V,           selpaste,       {.i =  0} },
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ MODKEY,               XK_b,           normalMode,     {.i =  0} },
 	{ MODKEY,               XK_i,           invert,         { }       },
 	{ MODKEY,               XK_Return,      newterm,        {.i =  0} },
 	{ MODKEY,               XK_u,           copyurl,        {.i =  0} },
