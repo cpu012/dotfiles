@@ -112,8 +112,12 @@ static const char *scratchpadcmd[] = { term, "-T", scratchpadname, NULL };
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
+static const char *scrn_takecmd[] = { "sh", "-c", "~/code/sh/scrot/run.sh" };
+static const char *scrn_viewcmd[] = { "sh", "-c", "~/code/sh/img/scrn.sh" };
+static const char *pic_viewcmd[] = { "sh", "-c", "~/code/sh/img/run.sh" };
 static const char *mancmd[]   = { "sh", "-c", "~/code/sh/wm/man.sh st", NULL };
 static const char *termcmd[]  = { term, NULL };
+static const char *browsercmd[] = { "sh", browser , NULL };
 static const char *dmenucmd[] = { "sh", "-c", "dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu -l 25 -H ~/.cache/dmenu/dmenu_run", NULL };
 static const char *vol_up_cmd[] = { "sh", "-c", "pamixer -i2; killall /bin/zsh; ~/code/sh/wm/status.zsh", NULL };
 static const char *vol_down_cmd[] = { "sh", "-c", "pamixer -d2; killall /bin/zsh; ~/code/sh/wm/status.zsh", NULL };
@@ -123,10 +127,12 @@ static const char *vol_mute_cmd[] = { "sh", "-c", "pamixer -t; killall /bin/zsh;
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd  } },
+	{ MODKEY,                       XK_F1,     spawn,          {.v = scrn_takecmd } },
+	{ MODKEY,                       XK_F2,     spawn,          {.v = scrn_viewcmd } },
 	{ MODKEY,                       XK_F3,     spawn,          {.v = mancmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_f,      fullscreen,     {0} },
 	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = vol_up_cmd} },
 	{ 0,              XF86XK_AudioLowerVolume, spawn,          {.v = vol_down_cmd} },
 	{ 0,                     XF86XK_AudioMute, spawn,          {.v = vol_mute_cmd} },
@@ -164,7 +170,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	{ MODKEY|ShiftMask|ControlMask,             XK_q,      quit,           {0} },
 };
 
 /* button definitions */
