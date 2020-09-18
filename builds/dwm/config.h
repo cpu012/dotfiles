@@ -65,6 +65,7 @@ static const Rule rules[] = {
 	{ NULL,      NULL,     "scratchpad",   0,         1,          1,          0,         -1 },
       { "feh",     NULL,     NULL,           0,         1,          0,          0,         -1 },
       { NULL,      NULL,     "man",          0,         1,          0,          1,         -1 },
+      { NULL,      NULL,     "sxiv",         0,         1,          0,          0,         -1 },
 };
 
 /* layout(s) */
@@ -90,6 +91,7 @@ typedef struct {
 
 static const char *const autostart[] = {
      "picom", NULL,
+     "dunst", NULL,
       "sh", "-c", "~/.fehbg", NULL,
 	term, NULL,
       "zsh", "-c", "~/code/sh/wm/status.zsh",
@@ -112,12 +114,13 @@ static const char *scratchpadcmd[] = { term, "-T", scratchpadname, NULL };
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
-static const char *scrn_takecmd[] = { "sh", "-c", "~/code/sh/scrot/run.sh" };
-static const char *scrn_viewcmd[] = { "sh", "-c", "~/code/sh/img/scrn.sh" };
-static const char *pic_viewcmd[] = { "sh", "-c", "~/code/sh/img/run.sh" };
+static const char *scrn_takecmd[] = { "sh", "-c", "~/code/sh/scrot/run.sh", NULL };
+static const char *scrn_viewcmd[] = { "sh", "-c", "~/code/sh/img/scrn.sh", NULL };
+static const char *pic_viewcmd[] = { "sh", "-c", "~/code/sh/img/run.sh", NULL };
+static const char *dopplercmd[] = { "sh", "-c", "~/code/sh/wm/doppler.sh", NULL };
 static const char *mancmd[]   = { "sh", "-c", "~/code/sh/wm/man.sh st", NULL };
 static const char *termcmd[]  = { term, NULL };
-static const char *browsercmd[] = { "sh", browser , NULL };
+static const char *browsercmd[] = { "sh", "-c", browser , NULL };
 static const char *dmenucmd[] = { "sh", "-c", "dmenu_run -p run: -i -h 25 -x 180 -y 320 -w 600 -id dmenu -l 25 -H ~/.cache/dmenu/dmenu_run", NULL };
 static const char *vol_up_cmd[] = { "sh", "-c", "pamixer -i2; killall /bin/zsh; ~/code/sh/wm/status.zsh", NULL };
 static const char *vol_down_cmd[] = { "sh", "-c", "pamixer -d2; killall /bin/zsh; ~/code/sh/wm/status.zsh", NULL };
@@ -128,6 +131,7 @@ static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY|ShiftMask,             XK_d,      spawn,          {.v = dopplercmd } },
 	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd  } },
 	{ MODKEY,                       XK_F1,     spawn,          {.v = scrn_takecmd } },
 	{ MODKEY,                       XK_F2,     spawn,          {.v = scrn_viewcmd } },
