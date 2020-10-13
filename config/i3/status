@@ -15,8 +15,8 @@ order += "volume master"
 order += "time"
 
 wireless _first_ {
-    format_up = "%quality %bitrate %essid %ip"
-    format_down = "📵"
+    format_up = "%quality %essid"
+    format_down = "Disconnected"
 }
 
 battery all {
@@ -32,7 +32,7 @@ battery all {
 }
 
 cpu_usage {
-    format = "%cpu0 %cpu1 (%usage)"
+    format = "%cpu0 %cpu1"
     degraded_threshold = "30"
     max_threshold = "75"
 }
@@ -49,10 +49,10 @@ load {
 }
 
 time {
-    format = "%Y %b %d (%a.)  %I:%M:%S %p "
+    format = "%Y %b %d (%a.) %I:%M:%S %p "
 }
 
 volume master {
-    format = "🔊 %volume %devicename"
-    format_muted = "🔇 %volume %devicename"
+    format = "🔊 %volume"
+    format_muted = "🔇 %volume"
 }

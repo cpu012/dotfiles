@@ -33,7 +33,7 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # window specific
-for_window [class="feh"] floating enable
+for_window [class="sxiv"] floating enable
 for_window [title="man"] floating enable
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -68,17 +68,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # custom modes
-
-# terminal mode
-mode "$modeTerm" { 
-    #create keybindings to return to normal mode
-    bindsym i mode "default"
-    #launch terminal applications inside your default terminal
-    bindsym m mode "default" exec --no-startup-id $term -e 'cmus'
-    bindsym Return mode "default" exec --no-startup-id $term
-}
-
-#sys mode
+# sys mode
 mode "$modeSys" { 
     set $lock exec i3lock -e -b -c 08090E -f
     #create keybindings to exit this mode
@@ -134,7 +124,6 @@ bindsym $mod+F2 exec --no-startup-id ~/code/sh/img/scrn.sh
 bindsym $mod+F3 exec $term -T man -e man $(man -k . | dmenu -l 24 -p man: -w 1239 -x 221 -y 218 | awk '{print $1}')
 # mode keybindings
 bindsym $mod+r mode "$modeResize"
-bindsym $mod+t mode "$modeTerm"
 bindsym $mod+q mode "$modeSys"
 bindsym $mod+m mode "$modeX11"
 
@@ -182,20 +171,24 @@ bar {
     i3bar_command i3bar -b bar-1 -t
     status_command i3status --config ~/.config/i3/status # put information on the bar
     position top
-    workspace_buttons no
-    font pango:monospace 10
+    workspace_buttons yes
+    font pango:monospace 12
     tray_output primary
     tray_padding 0
     separator_symbol "|"
-    Height 15
+    Height 25
     bindsym $mod+p mode toggle
     # set the bar colors
     colors {
 	  separator    #$blue
         background   #$background1d6
         statusline   #$red2ef
-        #            border        background       text
-        binding_mode #$background1f0 #$background1c0  #$forground1
+        #                  border        background       text
+        binding_mode       #$background2e2 #$background2e2  #$red2
+        active_workspace   #$background2   #$background1    #$forground1
+        inactive_workspace #$background2   #$background1    #$forground1
+        focused_workspace  #$background2   #$background2    #$forground2
+        urgent_workspace   #$red1          #$background1    #$forground1
 	}
 }
 
