@@ -96,9 +96,9 @@ mode "$modeResize" {
 # scratchpad mode
 mode "$modeScratch" { 
     bindsym i mode "default"
-    bindsym Return scratchpad show mode "default"
-    bindsym Shift+Return scratchpad show floating disable mode "default"
-    bindsym f [class="feh"] scratchpad show mode "default"
+    bindsym Shift+Return scratchpad show mode "default"
+    bindsym Return scratchpad show floating disable mode "default"
+    bindsym f [class="sxiv"] scratchpad show mode "default"
     bindsym t [class=$term] scratchpad show floating disable mode "default"
     bindsym d [class="discord"]  scratchpad show mode "default" floating disable move up
 }
@@ -106,7 +106,7 @@ mode "$modeScratch" {
 
 # x11 mode
 mode "$modeX11" {
-    bindsym i mode "default" exec
+    bindsym i mode "default"
     bindsym c mode "default" exec xcalib -invert -alter # invert mode
 }
 
@@ -115,13 +115,11 @@ bindsym $mod+b exec --no-startup-id $browser
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus mode "$modeScratch"
 bindsym $mod+p bar mode toggle bar-0
-bindsym $mod+o exec emojimenu
+bindsym $mod+o exec --no-startup-id emojione-picker
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+g exec --no-startup-id discord
 bindsym Print exec --no-startup-id ~/code/sh/scrot/run.sh
-bindsym $mod+F1 exec --no-startup-id ~/code/sh/img/run.sh
-bindsym $mod+F2 exec --no-startup-id ~/code/sh/img/scrn.sh
-bindsym $mod+F3 exec $term -T man -e man $(man -k . | dmenu -l 24 -p man: -w 1239 -x 221 -y 218 | awk '{print $1}')
+bindsym $mod+c exec $term -T man -e man $(man -k . | dmenu -l 24 -p man: -w 1239 -x 221 -y 218 | awk '{print $1}')
 # mode keybindings
 bindsym $mod+r mode "$modeResize"
 bindsym $mod+q mode "$modeSys"
@@ -168,21 +166,21 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # ahstetics (ricing)
 # start a bar with transparancy
 bar {
-    i3bar_command i3bar -b bar-1 -t
+    i3bar_command i3bar
     status_command i3status --config ~/.config/i3/status # put information on the bar
     position top
     workspace_buttons yes
-    font pango:monospace 12
+    font pango:monospace semibold 14
     tray_output primary
-    tray_padding 0
+    tray_padding 2
     separator_symbol "|"
-    Height 25
+    Height 26
     bindsym $mod+p mode toggle
     # set the bar colors
     colors {
 	  separator    #$blue
         background   #$background1d6
-        statusline   #$red2ef
+        statusline   #$red2
         #                  border        background       text
         binding_mode       #$background2e2 #$background2e2  #$red2
         active_workspace   #$background2   #$background1    #$forground1
@@ -212,15 +210,15 @@ client.placeholder      #$background1 #$background1 #$forground2 #$red2    #$blu
 
 
 # startup executions
-exec_always bluetoothctl power on
-exec_always ~/.config/i3/bat.sh
+exec emojione-picker
+exec conky
 
 # gaps 
 gaps inner 11
 gaps outer -4
 
 exec_always ~/.fehbg #set the wallpaper
-font pango:monospace 9
+font pango:monospace semibold 9
 
 # startup programs
 exec $term
