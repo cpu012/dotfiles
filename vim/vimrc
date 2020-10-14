@@ -1,4 +1,4 @@
-set nocompatible    "disable 'compatible' at the begining of the config so values can be changed later
+set nocompatible    "viMprove
 
 " turn tabs into spaces + encoding + indentation
 set tabstop=6
@@ -7,12 +7,11 @@ set expandtab
 set smarttab
 set shiftwidth=4
 set autoindent
+set cindent
 set laststatus=2
 set smartindent
 set encoding=utf-8
 
-"dont wrap lines
-set nowrap
 "leader key
 let mapleader=' '
 
@@ -22,8 +21,8 @@ set colorcolumn=100
 set cursorline
 set number relativenumber
 set incsearch
-set ignorecase
-"set cursorcolumn
+set cursorcolumn
+set signcolumn=yes
 
 
 "plugins
@@ -39,7 +38,6 @@ endif
 "install plugins
 call plug#begin('~/.vim/plugged')
 Plug 'ap/vim-css-color'
-Plug 'tmsvg/pear-tree'
 Plug 'itchyny/lightline.vim'
 Plug 'chrisbra/changesPlugin'
 Plug 'dense-analysis/ale'
@@ -113,7 +111,10 @@ let g:lightline#ale#indicator_errors = '❌ '
 let g:lightline#ale#indicator_ok = '✔ '
 
 
-silent! EnableChanges "enable the changes plugin as silent so I don't get an error message
+"changes plugin
+silent! EnableChanges
+let g:changes_sign_text_utf8 = 1
+
 
 "coding stuff
 "ale

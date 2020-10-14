@@ -15,8 +15,11 @@ color_sep=$color_degraded
 
 
 sep='^c'$color_sep'^'$sep_sym'^d^'
+
+weather=$(curl "wttr.in?format=%c%m+%t+%h+%w\n&uq")
 while [ true ]; do
-    time=$(date +%Y\ %b\ \(%a.\)\ %I:%M:%S\ %p)  # get current time
+    time=$(date +%Y\ %b\ %d\ \(%a.\)\ %I:%M:%S\ %p)  # get current time
+    time_minute=$(date +%M)
 
 
     # ram & swap
@@ -72,6 +75,8 @@ while [ true ]; do
         bat_chrg_drw='⚡'
     elif [ $bat_state = 'Full' ]; then
         bat_chrg_drw='⚡'
+    else
+        bat_chrg_drw=''
     fi
     bat_drw=$bat_chrg_drw"^c#cccccc^^r0,7,2,4^^r2,4,22,10^^c#08090e^^r3,5,20,8^"$bat_color"^r"$(( 23 - $bat_per_raw / 5 ))",5,"$(( $bat_per_raw / 5 ))",8^^d^^f24^ "
 
@@ -109,7 +114,13 @@ while [ true ]; do
     load_format=$load_color$load
 
 
-    format=$mem_format$sep$bat_format$sep$load_format$sep$audio_format$sep$time'^d^'
+    # weather
+    if [ $time_minute -eq 0 ]; then
+        weather=$(curl "wttr.in/?format=%c%m+%t+%h+%w\n&uq")
+    fi
+
+
+    format=$weather$sep$mem_format$sep$bat_format$sep$load_format$sep$audio_format$sep$time'^d^'
     xsetroot -name $format
     sleep $interval
 done

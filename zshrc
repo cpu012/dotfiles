@@ -20,10 +20,7 @@ setopt EXTENDED_HISTORY
 setopt SHARE_HISTORY
 
 
-# plugins
-if [[ ! -a ~/.zplug ]]; then
-    curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-fi
+#curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 source ~/.zplug/init.zsh
 zplug "woefe/vi-mode.zsh"
 zplug "zsh-users/zsh-syntax-highlighting"
