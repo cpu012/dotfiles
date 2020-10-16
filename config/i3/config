@@ -111,11 +111,14 @@ mode "$modeX11" {
 }
 
 # custom keybindings
+bindsym $mod+y exec nitrogen --set-zoom-fill --random ~/images/desktop/active_wallpapers
 bindsym $mod+b exec --no-startup-id $browser
 bindsym $mod+minus move scratchpad
 bindsym $mod+plus mode "$modeScratch"
 bindsym $mod+p bar mode toggle bar-0
 bindsym $mod+o exec --no-startup-id emojione-picker
+bindsym $mod+t exec --no-startup-id $term -e w3m "wttr.in/?uq"
+bindsym $mod+Shift+t exec --no-startup-id ~/code/sh/wm/doppler.sh
 bindsym $mod+Return exec --no-startup-id $term
 bindsym $mod+g exec --no-startup-id discord
 bindsym Print exec --no-startup-id ~/code/sh/scrot/run.sh
@@ -210,15 +213,19 @@ client.placeholder      #$background1 #$background1 #$forground2 #$red2    #$blu
 
 
 # startup executions
-exec emojione-picker
 exec conky
+exec dunst
 
 # gaps 
 gaps inner 11
 gaps outer -4
 
-exec_always ~/.fehbg #set the wallpaper
+exec_always nitrogen --set-zoom-fill --random ~/images/desktop/active_wallpapers #set the wallpaper
 font pango:monospace semibold 9
 
 # startup programs
 exec $term
+exec emojione-picker
+
+# set up monitors at startup
+exec xrandr --output default --primary
