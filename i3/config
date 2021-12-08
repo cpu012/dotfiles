@@ -165,7 +165,19 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
+mode "media" {
+	bindsym space exec playerctl play-pause; mode "default"
+	bindsym n exec playerctl next; mode "default"
+	bindsym p exec playerctl previous; mode "default"
+	bindsym l exec playerctl play-pause
+	bindsym b exec playerctl previous
+	bindsym f exec playerctl next
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+}
+
 bindsym $mod+r mode "resize"
+bindsym $mod+c mode "media"
 
 ######################################
 # keybindings for different actions: #
