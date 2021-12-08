@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+layout=$(xkb-switch -l | tr a-z A-Z | rofi -theme ~/.config/rofi/rofikeyhint.rasi -dmenu -p "Layout")
+xkb-switch -s $layout
