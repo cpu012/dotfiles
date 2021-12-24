@@ -1,12 +1,32 @@
-[colors]
-background = ${xrdb:color0:#222}
-foreground = ${xrdb:color7:#222}
-foreground-alt = ${xrdb:color7:#222}
-primary = ${xrdb:color1:#222}
-secondary = ${xrdb:color2:#222}
-alert = ${xrdb:color3:#222}
+[solarized]
+base00 =            #657b83
+base01 =            #586e75
+base02 =            #073642
+base03 =            #002b36
+base0 =             #839496
+base1 =             #93a1a1
+base2 =             #eee8d5
+base3 =             #fdf6e3
+yellow =            #b58900
+orange =            #cb4b16
+red =               #dc322f
+magenta =           #d33682
+violet =            #6c71c4
+blue =              #268bd2
+cyan =              #2aa198
+green =             #859900
 
-[bar/example]
+[colors]
+background =        ${solarized.base03}
+background-alt =    ${solarized.base02}
+foreground =        ${solarized.base0}
+foreground-alt =    ${solarized.base1}
+alert =             ${solarized.red}
+primary =           ${solarized.violet}
+secondary =         ${solarized.green}
+
+
+[bar/laptop]
 ;monitor = ${env:MONITOR:HDMI-1}
 width = 100%
 height = 27
@@ -19,7 +39,7 @@ background = ${colors.background}
 foreground = ${colors.foreground}
 
 line-size = 3
-line-color = #f00
+line-color = ${colors.foreground}
 
 border-size = 2
 border-color = ${colors.background}
@@ -32,13 +52,13 @@ module-margin = 2
 font-0 = "UbuntuMono Nerd Font:size=10;2"
 font-1 = "UbuntuMono Nerd Font:size=16;3"
 font-2 = "Font Awesome 5 Free:style=Regular:pixelsize=8;1"
-font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=8;1"
+font-3 = "Font Awesome 5 Free:style=Solid:pixelsize=9;1"
 font-4 = "Font Awesome 5 Brands:pixelsize=8;1"
 font-5 = "Fira Mono:size=10;0"
-font-6 = "Fira Code: size=10;0"
+font-6 = "Fira Code:size=10;0"
 
-modules-left = i3
-modules-center =
+modules-left = i3 xwindow
+modules-center = 
 modules-right = pulseaudio xkeyboard memory cpu wlan eth battery temperature date
 
 tray-position = right
@@ -61,23 +81,25 @@ cursor-scroll = ns-resize
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+label = %title%
+label-maxlen = 50
+label-empty =
+label-font = 6
 
 [module/xkeyboard]
 type = internal/xkeyboard
-blacklist-0 = num lock
 
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-prefix-underline = ${colors.secondary}
 
-label-layout = %layout%
-label-layout-underline = ${colors.secondary}
+label-layout = %name%
 
 label-indicator-padding = 2
 label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
-label-indicator-underline = ${colors.secondary}
+
+label-indicator-on = %icon% 
+indicator-icon-0 = caps lock;-CL;CL
+indicator-icon-1 = scroll lock;;SL
+indicator-icon-2 = num lock;-NL;NL
+
 
 [module/i3]
 type = internal/i3
@@ -120,12 +142,17 @@ label-urgent-padding = 2
 [module/mpd]
 type = internal/mpd
 format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+interval = 1
 
-icon-prev = 
-icon-stop = 
-icon-play = 
-icon-pause = 
-icon-next = 
+label-offline = mpd is offline
+label-song = 𝄞 %artist% - %title%
+
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
 
 label-song-maxlen = 25
 label-song-ellipsis = true
@@ -166,33 +193,47 @@ ramp-coreload-7 = █
 
 [module/memory]
 type = internal/memory
-interval = 1
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #4bffdc
-label = %percentage_used%%
+interval = 3
+format = <label> <ramp-used><ramp-swap-used>
+format-prefix = " "
+format-prefix-font = 4
+label =%gb_used%
+
+ramp-swap-used-foreground = ${colors.alert}
+ramp-used-foreground = ${colors.secondary}
+
+ramp-used-0 = ▁
+ramp-used-1 = ▂
+ramp-used-2 = ▃
+ramp-used-3 = ▄
+ramp-used-4 = ▅
+ramp-used-5 = ▆
+ramp-used-6 = ▇
+ramp-used-7 = █
+
+ramp-swap-used-0 = ""
+ramp-swap-used-1 = ▁
+ramp-swap-used-2 = ▂
+ramp-swap-used-3 = ▃
+ramp-swap-used-4 = ▄
+ramp-swap-used-5 = ▅
+ramp-swap-used-6 = ▆
+ramp-swap-used-7 = ▇
+ramp-swap-used-8 = █
 
 [module/wlan]
 type = internal/network
-interface = net1
-interval = 3.0
+interface = wlan0
+interval = 1
 
-format-connected = <ramp-signal> <label-connected>
-format-connected-underline = #9f78e1
-label-connected = %essid%
+format-connected = <label-connected>
+format-connected-padding = 1
+label-connected = "%upspeed%   %downspeed%  "
 
 format-disconnected =
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
-;label-disconnected-foreground = ${colors.foreground-alt}
-
-ramp-signal-0 = 
-ramp-signal-1 = 
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
-ramp-signal-foreground = ${colors.foreground-alt}
 
 [module/eth]
 type = internal/network
@@ -212,46 +253,32 @@ format-disconnected =
 
 [module/date]
 type = internal/date
-interval = 5
+interval = 1
 
 date =
-date-alt = " %Y-%m-%d"
+date-alt = "  %a. %b. %d %Y"
 
-time = %H:%M
-time-alt = %H:%M:%S
+time = %I:%M:%S
+time-alt = "%I:%M:%S %p"
 
-format-prefix = 
-format-prefix-foreground = ${colors.foreground-alt}
-format-underline = #0a6cf5
-
-label = %date% %time%
+label = %date%%time%
 
 [module/pulseaudio]
 type = internal/pulseaudio
 
-format-volume = <label-volume> <bar-volume>
-label-volume = VOL %percentage%%
-label-volume-foreground = ${root.foreground}
+format-volume = <label-volume> <ramp-volume>
+label-volume = %percentage%%
+label-volume-foreground = ${colors.foreground}
 
-label-muted = 🔇 muted
-label-muted-foreground = #666
+label-muted = %percentage%% %{T4}%{T-}
+label-muted-foreground = ${colors.foreground-alt}
 
-bar-volume-width = 10
-bar-volume-foreground-0 = #55aa55
-bar-volume-foreground-1 = #55aa55
-bar-volume-foreground-2 = #55aa55
-bar-volume-foreground-3 = #55aa55
-bar-volume-foreground-4 = #55aa55
-bar-volume-foreground-5 = #f5a70a
-bar-volume-foreground-6 = #ff5555
-bar-volume-gradient = false
-bar-volume-indicator = |
-bar-volume-indicator-font = 2
-bar-volume-fill = ─
-bar-volume-fill-font = 2
-bar-volume-empty = ─
-bar-volume-empty-font = 2
-bar-volume-empty-foreground = ${colors.foreground-alt}
+ramp-volume-font = 4
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+
 
 [module/alsa]
 type = internal/alsa
@@ -284,54 +311,59 @@ bar-volume-empty-foreground = ${colors.foreground-alt}
 [module/battery]
 type = internal/battery
 battery = BAT0
-adapter = ADP1
-full-at = 98
+adapter = AC0
 
-format-charging = <animation-charging> <label-charging>
-format-charging-underline = #ffb52a
+time-format = "%H:%M"
+poll-interval = 5
 
-format-discharging = <animation-discharging> <label-discharging>
-format-discharging-underline = ${self.format-charging-underline}
+format-charging-prefix = " "
+format-charging = <label-charging> <ramp-capacity>
+format-charging-underline = ${solarized.primary}
+format-charging-padding = 1
 
-format-full-prefix = " "
-format-full-prefix-foreground = ${colors.foreground-alt}
-format-full-underline = ${self.format-charging-underline}
+format-discharging = <label-discharging> <ramp-capacity>
+format-discharging-underline = ${solarized.primary}
+format-discharging-padding = 1
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-foreground = ${colors.foreground-alt}
+label-charging = "%percentage%% (%time%)"
+label-discharging = "%percentage%% (%time%)"
+label-full = "%percentage%%"
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-foreground = ${colors.foreground-alt}
-animation-charging-framerate = 750
+format-full-underline =${colors.primary}
+format-full = <label-full> <ramp-capacity>
+format-full-prefix = " "
+format-full-padding = 1
 
-animation-discharging-0 = 
-animation-discharging-1 = 
-animation-discharging-2 = 
-animation-discharging-foreground = ${colors.foreground-alt}
-animation-discharging-framerate = 750
+ramp-capacity-0 = " "
+ramp-capacity-0-foreground = ${colors.alert}
+ramp-capacity-1 = " "
+ramp-capacity-1-foreground = ${solarized.orange}
+ramp-capacity-2 = " "
+ramp-capacity-2-foreground = ${solarized.yellow}
+ramp-capacity-3 = " "
+ramp-capacity-4 = " "
+ramp-capacity-4-foreground = ${solarized.green}
 
 [module/temperature]
 type = internal/temperature
 thermal-zone = 0
-warn-temperature = 60
+interval = 2
+warn-temperature = 80
+units = false
 
 format = <ramp> <label>
-format-underline = #f50a4d
 format-warn = <ramp> <label-warn>
-format-warn-underline = ${self.format-underline}
+format-warn-underline = ${colors.alert}
 
-label = %temperature-c%
-label-warn = %temperature-c%
-label-warn-foreground = ${colors.secondary}
+label = %temperature-c%°
+label-warn = %temperature-c%°
+label-warn-foreground = ${colors.alert}
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-3 = 
+ramp-3-foreground = ${colors.alert}
 
 [module/powermenu]
 type = custom/menu
