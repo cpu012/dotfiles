@@ -61,6 +61,8 @@ modules-left = i3 xwindow
 modules-center = 
 modules-right = pulseaudio memory cpu wlan eth temperature date
 
+enable-ipc = true
+
 tray-position = right
 tray-padding = 0
 ;tray-background = #0063ff
@@ -112,8 +114,10 @@ font-6 = "Fira Code:size=10;0"
 font-7 = "Source Code Pro:style=Semibold:size=9;0"
 
 modules-left = i3 xwindow
-modules-center = 
+modules-center = spotify spotify-prev spotify-play-pause spotify-next
 modules-right = pulseaudio xkeyboard memory cpu wlan eth battery temperature date
+
+enable-ipc = true
 
 tray-position = right
 tray-padding = 0
@@ -407,9 +411,9 @@ format-full-padding = 1
 ramp-capacity-0 = " "
 ramp-capacity-0-foreground = ${colors.alert}
 ramp-capacity-1 = " "
-ramp-capacity-1-foreground = ${solarized.orange}
+ramp-capacity-1-foreground = ${solarized.yellow}
 ramp-capacity-2 = " "
-ramp-capacity-2-foreground = ${solarized.yellow}
+ramp-capacity-2-foreground = ${solarized.white}
 ramp-capacity-3 = " "
 ramp-capacity-4 = " "
 ramp-capacity-4-foreground = ${solarized.green}
@@ -479,3 +483,33 @@ margin-top = 5
 margin-bottom = 5
 
 ; vim:ft=dosini
+
+[module/spotify]
+type = custom/script
+tail = true
+; prefix symbol is shown before the text
+format = <label>
+exec-if = "playerctl status"
+exec = ~/.config/polybar/scripts/scroll_spotify_status.sh
+
+[module/spotify-prev]
+type = custom/script
+exec-if = "playerctl status"
+exec = echo ""
+format = <label>
+click-left = playerctl previous -p spotify
+
+[module/spotify-play-pause]
+type = custom/ipc
+hook-0 = echo ""
+hook-1 = echo ""
+hook-2 =
+initial = 3
+click-left = playerctl play-pause -p spotify
+
+[module/spotify-next]
+type = custom/script
+exec-if = "playerctl status"
+exec = echo ""
+format = <label>
+click-left = playerctl next -p spotify
