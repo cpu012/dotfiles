@@ -329,7 +329,7 @@ date-alt = "  %a. %b. %d %Y"
 time = %I:%M:%S
 time-alt = "%I:%M:%S %p"
 
-label = %date%%time%
+label = %date% %time%
 label-font = 6
 
 [module/pulseaudio]
@@ -389,11 +389,9 @@ poll-interval = 5
 
 format-charging-prefix = " "
 format-charging = <label-charging> <ramp-capacity>
-format-charging-underline = ${solarized.primary}
 format-charging-padding = 1
 
 format-discharging = <label-discharging> <ramp-capacity>
-format-discharging-underline = ${solarized.primary}
 format-discharging-padding = 1
 
 label-charging = "%percentage%% (%time%)"
@@ -403,7 +401,6 @@ label-discharging-font = 6
 label-full = "%percentage%%"
 label-full-font = 6
 
-format-full-underline =${colors.primary}
 format-full = <label-full> <ramp-capacity>
 format-full-prefix = " "
 format-full-padding = 1
