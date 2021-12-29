@@ -1,3 +1,5 @@
+# dependencies: polybar-spotify-module (aur)
+
 [solarized]
 base00 =            #657b83
 base01 =            #586e75
@@ -58,7 +60,7 @@ font-6 = "Fira Code:size=10;0"
 font-7 = "Source Code Pro:style=Semibold:size=9;0"
 
 modules-left = i3 xwindow
-modules-center = 
+modules-center = modules-center = spotify previous playpause next
 modules-right = pulseaudio memory cpu wlan eth temperature date
 
 enable-ipc = true
@@ -114,7 +116,7 @@ font-6 = "Fira Code:size=10;0"
 font-7 = "Source Code Pro:style=Semibold:size=9;0"
 
 modules-left = i3 xwindow
-modules-center = spotify spotify-prev spotify-play-pause spotify-next
+modules-center = modules-center = spotify previous playpause next
 modules-right = pulseaudio xkeyboard memory cpu wlan eth battery temperature date
 
 enable-ipc = true
@@ -481,32 +483,39 @@ margin-bottom = 5
 
 ; vim:ft=dosini
 
-[module/spotify]
-type = custom/script
-tail = true
-; prefix symbol is shown before the text
-format = <label>
-exec-if = "playerctl status"
-exec = ~/.config/polybar/scripts/scroll_spotify_status.sh
-
-[module/spotify-prev]
-type = custom/script
-exec-if = "playerctl status"
-exec = echo ""
-format = <label>
-click-left = playerctl previous -p spotify
-
-[module/spotify-play-pause]
+[module/previous]
 type = custom/ipc
-hook-0 = echo ""
-hook-1 = echo ""
-hook-2 =
-initial = 3
-click-left = playerctl play-pause -p spotify
+; Default
+hook-0 = echo ""
+; When spotify active
+hook-1 = echo ""
+click-left = "spotifyctl -q previous"
 
-[module/spotify-next]
-type = custom/script
-exec-if = "playerctl status"
-exec = echo ""
-format = <label>
-click-left = playerctl next -p spotify
+
+[module/next]
+type = custom/ipc
+; Default
+hook-0 = echo ""
+; When spotify active
+hook-1 = echo ""
+click-left = "spotifyctl -q next"
+
+
+[module/playpause]
+type = custom/ipc
+; Default
+hook-0 = echo ""
+; Playing
+hook-1 = echo ""
+; Paused
+hook-2 = echo ""
+click-left = "spotifyctl -q playpause"
+
+
+[module/spotify]
+type = custom/ipc
+; Default
+hook-0 = echo ""
+; Playing/paused show song name and artist
+hook-1 = spotifyctl -q status --format '%artist%: %title%'
+
