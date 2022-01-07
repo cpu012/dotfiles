@@ -1,5 +1,5 @@
 set $term "kitty"
-set $browser "firefox"
+set $browser "firefox-esr"
 
 
 font pango:monospace 10
@@ -302,7 +302,7 @@ set $ws10 "10"
 
 # bind program to workspace and focus to them on startup:
 assign [class=$term] $ws1
-assign [class=$browser] $ws2
+assign [class="Firefox"] $ws2
 assign [class="Thunar"] $ws3
 assign [class="Thunderbird"] $ws4
 assign [class="TelegramDesktop"] $ws5
@@ -310,7 +310,7 @@ assign [class="TelegramDesktop"] $ws5
 
 # automatic set focus new window if it opens on another workspace then the current:
 for_window [class=$term] focus
-for_window [class=$browser] focus
+for_window [class="Firefox"] focus
 for_window [class=xpad] focus
 
 # notepad config
