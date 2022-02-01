@@ -272,7 +272,7 @@ bindsym $mod+p exec /usr/local/bin/switch-audio-port
 
 ## App shortcuts
 bindsym $mod+w exec $browser
-bindsym Print exec "scrot ~/%Y-%m-%d-%T-screenshot.png"
+bindsym Print exec "~/.config/i3/scripts/scrot.sh ~/Pictures/scrots"
 
 ##########################################
 # configuration for workspace behaviour: #

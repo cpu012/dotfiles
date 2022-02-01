@@ -118,7 +118,6 @@ font-7 = "Source Code Pro:style=Semibold:size=9;0"
 modules-left = i3 xwindow
 modules-center = modules-center = spotify previous playpause next
 modules-right = pulseaudio xkeyboard memory cpu wlan eth battery temperature date
-
 enable-ipc = true
 
 tray-position = right
@@ -149,8 +148,10 @@ label-font = 6
 [module/xkeyboard]
 type = internal/xkeyboard
 
+blacklist-0 = num lock
+blacklist-1 = scroll lock
 
-label-layout = %name%
+label-layout = %layout%
 label-layout-font = 6
 
 label-indicator-padding = 2
@@ -158,7 +159,7 @@ label-indicator-margin = 1
 label-indicator-on-font = 6
 
 label-indicator-on = %icon% 
-indicator-icon-0 = caps lock;-CL;CL
+indicator-icon-0 = caps lock;-CL;
 indicator-icon-1 = scroll lock;;SL
 indicator-icon-2 = num lock;-NL;NL
 
