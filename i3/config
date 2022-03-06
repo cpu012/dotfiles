@@ -1,5 +1,5 @@
 set $term "kitty"
-set $browser "firefox-esr"
+set $browser "firefox"
 
 
 font pango:monospace 10
