@@ -1,5 +1,5 @@
 set $term "kitty"
-set $browser "firefox"
+set $browser "librewolf"
 
 
 font pango:monospace 10
@@ -138,19 +138,7 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
-mode "media" {
-	bindsym space exec playerctl play-pause; mode "default"
-	bindsym n exec playerctl next; mode "default"
-	bindsym p exec playerctl previous; mode "default"
-	bindsym l exec playerctl play-pause
-	bindsym b exec playerctl previous
-	bindsym f exec playerctl next
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-
 bindsym $mod+r mode "resize"
-bindsym $mod+c mode "media"
 
 ######################################
 # keybindings for different actions: #
@@ -302,15 +290,14 @@ set $ws10 "10"
 
 # bind program to workspace and focus to them on startup:
 assign [class=$term] $ws1
-assign [class="Firefox"] $ws2
+assign [class=$browser] $ws2
 assign [class="Thunar"] $ws3
-assign [class="Thunderbird"] $ws4
-assign [class="TelegramDesktop"] $ws5
+assign [class="discord"] $ws4
+assign [class="slack"] $ws4
+assign [title="(?i)Arduino"] $ws1
 
 
 # automatic set focus new window if it opens on another workspace then the current:
-for_window [class=$term] focus
-for_window [class="Firefox"] focus
 for_window [class=xpad] focus
 
 # notepad config
@@ -335,7 +322,7 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 # num lock activated
 #exec --no-startup-id numlockx on
 # configure multiple keyboard layouts and hotkey to switch (Alt+CAPSLOCK in this example)
-#exec --no-startup-id setxkbmap -layout 'us,sk' -variant altgr-intl,qwerty -option 'grp:alt_caps_toggle'
+exec --no-startup-id setxkbmap -layout 'us,il'
 
 # start conky:
 #exec_always --no-startup-id conky
@@ -401,17 +388,18 @@ for_window [class="Pamac-manager"] floating enable
 # colorscheme: solarized
 set $bg #002b36
 set $fg #839496
-set $bg_sel #81908f
-set $fg_sel #002831
+set $bg_sel #073642
+set $fg_sel #93a1a1
 set $green  #859900
 set $yellow #b58900
 set $red    #dc322f
+set $magenta #d33682
 
 
 # define colors for windows:
 #class		        	border		bground		text		indicator	child_border
-client.focused		    $bg_sel 	    $bg	    $fg_sel		$green		$yellow
-client.unfocused	    $bg     	$bg	        $fg		    $green		$yellow
+client.focused		    $bg        	$bg_sel	        $fg_sel		$green		$yellow
+client.unfocused	    $bg     	$bg	        $fg		    $magenta	$yellow
 client.focused_inactive	$bg     	$bg     	$fg	    	$green		$yellow
 client.urgent		    $red    	$bg     	$fg		    $green		$yellow
 
@@ -442,3 +430,7 @@ bindsym $mod+t exec rofi -show window \
 ## change keyboard layout
 bindsym $mod+Shift+z exec ~/.config/i3/scripts/keyboard-switch
 bindsym $mod+z exec xkb-switch -n
+
+## scratchpad
+bindsym $mod+minus move scratchpad
+bindsym $mod+plus scratchpad show floating toggle

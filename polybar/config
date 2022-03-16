@@ -199,7 +199,7 @@ label-visible-font = 6
 
 ; urgent = Workspace with urgency hint set
 label-urgent = %index%
-label-urgent-background = ${colors.alert}
+label-urgent-underline = ${colors.alert}
 label-urgent-padding = 2
 label-urgent-font = 6
 
